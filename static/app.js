@@ -138,7 +138,9 @@ function transcribeRecording() {
     fetch(`/transcribe/${id}`, {
         method: "POST",
     }).then((res) => res.json()).then((res) => {
-        console.log("sent for transcription", res)
+        if(res.message === "success") {
+            location.assign(location.href+"/transcripts/"+id)
+        }
     }).catch((err) => {
         console.log("error in transcribing")
     })

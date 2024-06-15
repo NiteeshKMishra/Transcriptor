@@ -5,6 +5,8 @@ from datetime import datetime
 from pathlib import Path
 from flask import Blueprint, render_template, request
 
+from app.openai import transcribe_audio
+
 routes = Blueprint(
     'routes', __name__, url_prefix='/'
 )
@@ -28,16 +30,27 @@ def save_audio():
         logger.error("error in save_audio", repr(e))
         return {"message": "failure", "error": str(e)}
 
-@routes.route("/transcribe/<filename>", methods = ['POST'])
-def transcribe_audio(filename):
+@routes.route("/transcribe/<file_id>", methods = ['POST'])
+def process_audio(file_id):
     logger = logging.getLogger()
+
     recordings_folder="./recordings"
-    recording_path = os.path.join(recordings_folder, filename+".webm")
+    transcripts_folder="./transcripts"
+    os.makedirs(transcripts_folder, mode = 0o777, exist_ok = True)
+
+    recording_path = os.path.join(recordings_folder, file_id+".webm")
+
     try:
-        if not os.path.exists(recording_path):
-            logger.error("error in transcribe_audio", "recording not found")
-            raise Exception("recording not found")
-        return {"message": "success"}
+        transcription = transcribe_audio(recording_path)
+        data = {
+            "transcript": transcription,
+            "sentiment": "",
+            "summary": "",
+        }
+        transcript_path = os.path.join(transcripts_folder, file_id+".json")
+        with open(transcript_path, "w") as transcript_file:
+            json.dump(data, transcript_file, indent=4)
+            return {"message": "success"}
     except Exception as e:
         logger.error("error in transcribe_audio", repr(e))
         return {"message": "failure", "error": str(e)}
@@ -78,7 +91,7 @@ def transcripts_page():
                 logger.error("path does not exists", transcript_path)
                 data["found"]=False
                 return render_template("transcript.html", data=data)
-            with open(transcript_path, "rb") as f:
+            with open(transcript_path, "r") as f:
                 transcript_data = json.load(f)
                 data = {
                     **data,
