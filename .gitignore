@@ -9,6 +9,10 @@ __pycache__/
 # env
 secrets.env
 
+# data
+transcripts/
+recordings/
+
 # Distribution / packaging
 .Python
 build/

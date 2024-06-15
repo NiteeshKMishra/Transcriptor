@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+  {% block stylesheet %}
+    <link rel="stylesheet" href="transcript.css">
+  {% endblock %}
+  {% block content %}
+    {% if data.found %}
+      <h3>Summary</h2>
+      <p class="summary">{{data.summary}}</p>
+      <h3 class="transcript-header">Transcript</h2>
+      <p class="transcript" data-sentiment="{{data.sentiment}}">{{data.transcript}}</p>
+    {% else %}
+      <h3 class="not-found">No transcript found with given id</h2>
+      <h3 class="not-found">Please start recording to view transcripts</h2>
+    {% endif %}
+  {% endblock %}

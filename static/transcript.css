@@ -1,0 +1,19 @@
+.not-found, .transcript, .summary {
+  text-align: center;
+}
+
+.summary {
+  font-size: 1.25rem;
+}
+
+.transcript {
+  font-size: 1rem;
+}
+
+[data-sentiment='negative'] {
+  color: #ff3845;
+}
+
+[data-sentiment='positive'] {
+  color: #3da564;
+}

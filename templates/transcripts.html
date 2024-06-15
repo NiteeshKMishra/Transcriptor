@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+  {% block stylesheet %}
+    <link rel="stylesheet" href="transcripts.css">
+  {% endblock %}
+  {% block content %}
+    {% if data.found %}
+      <h2>Transcripts</h2>
+      <div class="transcripts-content">
+      {% for transcript in data.transcripts %}
+        <div class="transcripts-container" onclick="navigate({{transcript.id}})">
+          <p class="transcripts-summary">{{transcript.summary}}</p>
+          <div class="transcripts-date">
+            <span>{{transcript.created_at}}</span>
+            <span class="transcripts-sentiment" data-sentiment="{{transcript.sentiment}}"></span>
+          </div>
+        </div>
+      {% endfor %}
+      <div>
+    {% else %}
+      <h3 class="not-found">No transcripts found</h2>
+      <h3 class="not-found">Please start recording to view transcripts</h2>
+    {% endif %}
+  {% endblock %}

@@ -1,0 +1,36 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  row-gap: 1rem;
+  border: 1px solid #000;
+  padding: 1rem;
+  width: 400px;
+  height: 70vh;
+  box-shadow: 2px 2px #000;
+}
+
+.heading-text {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.start, .stop {
+  cursor: pointer;
+}
+
+.display-none {
+  display: none;
+}
+
+.display-block {
+  display: block;
+}
+
+@media (max-width: 600px) {
+  .container {
+    width: 70vw;
+    height: 50vh;
+  }
+}
