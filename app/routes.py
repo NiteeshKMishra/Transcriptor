@@ -13,6 +13,35 @@ routes = Blueprint(
 def home_page():
     return render_template("home.html")
 
+@routes.route("/save", methods = ['POST'])
+def save_audio():
+    logger = logging.getLogger()
+    recordings_folder="./recordings"
+    os.makedirs(recordings_folder, mode = 0o777, exist_ok = True)
+    try:
+        recording = request.files['file']
+        filename = request.form['filename']
+        recording_path = os.path.join(recordings_folder, filename+".webm")
+        recording.save(recording_path)
+        return {"message": "success"}
+    except Exception as e:
+        logger.error("error in save_audio", repr(e))
+        return {"message": "failure", "error": str(e)}
+
+@routes.route("/transcribe/<filename>", methods = ['POST'])
+def transcribe_audio(filename):
+    logger = logging.getLogger()
+    recordings_folder="./recordings"
+    recording_path = os.path.join(recordings_folder, filename+".webm")
+    try:
+        if not os.path.exists(recording_path):
+            logger.error("error in transcribe_audio", "recording not found")
+            raise Exception("recording not found")
+        return {"message": "success"}
+    except Exception as e:
+        logger.error("error in transcribe_audio", repr(e))
+        return {"message": "failure", "error": str(e)}
+
 @routes.route("/transcripts")
 def transcripts_page():
     logger = logging.getLogger()

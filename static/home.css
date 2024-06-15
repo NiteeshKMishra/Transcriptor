@@ -11,7 +11,7 @@
   box-shadow: 2px 2px #000;
 }
 
-.heading-text {
+.heading-text, .timer {
   font-size: 18px;
   font-weight: bold;
 }
@@ -28,9 +28,19 @@
   display: block;
 }
 
+.transcribe-btn {
+  background-color: #225;
+  color: #fff;
+  padding: 0.5rem;
+}
+
 @media (max-width: 600px) {
   .container {
     width: 70vw;
-    height: 50vh;
+    height: 60vh;
+  }
+  .recording {
+    width: 200px;
+    height: 24px;
   }
 }

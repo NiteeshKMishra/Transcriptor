@@ -6,19 +6,26 @@
     <h2>Transcriptor</h2>
     <div class="container">
       <p class="heading-text" id="heading">Start Recording</p>
-      <svg width="32" height="32" fill="currentColor" class="start" viewBox="0 0 16 16">
+      <p class="timer display-none" id="timer"></p>
+      <svg width="32" height="32" fill="currentColor" class="start" viewBox="0 0 16 16" id="startbtn" onclick="startRecording()">
         <rect>
           <title>Start recording</title>
         </rect>
         <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
         <path d="M10.229 5.055a.5.5 0 0 0-.52.038L7 7.028V5.5a.5.5 0 0 0-1 0v5a.5.5 0 0 0 1 0V8.972l2.71 1.935a.5.5 0 0 0 .79-.407v-5a.5.5 0 0 0-.271-.445"/>
       </svg>
-      <svg width="32" height="32" fill="currentColor" class="stop display-none" viewBox="0 0 16 16">
+      <svg width="32" height="32" fill="currentColor" class="stop display-none" viewBox="0 0 16 16" id="stopbtn" onclick="stopRecordingAndSave()">
         <rect>
           <title>Stop recording</title>
         </rect>
         <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
         <path d="M5 6.5A1.5 1.5 0 0 1 6.5 5h3A1.5 1.5 0 0 1 11 6.5v3A1.5 1.5 0 0 1 9.5 11h-3A1.5 1.5 0 0 1 5 9.5z"/>
       </svg>
+      <audio controls id="recording" class="recording display-none"></audio>
+      <button id="transcribe-btn" class="transcribe-btn display-none" onclick="transcribeRecording()">Transcribe</button>
     </div>
+  {% endblock %}
+  {% block jsscript %}
+    <script src="recorder.js"></script>
+    <script src="app.js"></script>
   {% endblock %}
