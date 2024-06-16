@@ -135,14 +135,28 @@ function displayElapsedTime(elapsedTime) {
 function transcribeRecording() {
     let transcribeBtn = document.getElementById("transcribe-btn")
     let id = transcribeBtn.getAttribute("filename")
-    fetch(`/transcribe/${id}`, {
-        method: "POST",
-    }).then((res) => res.json()).then((res) => {
-        if(res.message === "success") {
-            location.assign(location.href+"/transcripts/"+id)
+    let translate = false;
+    Swal.fire({
+        title: "Language",
+        text: "Is your recording in English?",
+        icon: "question",
+        showCancelButton: true,
+        focusConfirm: true,
+        confirmButtonText: "Yes",
+        cancelButtonText: "No"
+    }).then((result) => {
+        if(result.isConfirmed) {
+            translate = true
         }
-    }).catch((err) => {
-        console.log("error in transcribing")
+        fetch(`/transcribe/${id}?translate=${translate}`, {
+            method: "POST",
+        }).then((res) => res.json()).then((res) => {
+            if(res.message === "success") {
+                location.assign(location.origin+"/transcripts?id="+id)
+            }
+        }).catch((err) => {
+            console.log("error in transcribing")
+        })
     })
 }
 

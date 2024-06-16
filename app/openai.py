@@ -38,7 +38,8 @@ def transcribe_audio(file_path):
     | retry_if_exception_type(APIError)
     | retry_if_exception_type(RateLimitError),
 )
-def translate_audio(audio_file):
+def translate_audio(file_path):
+    audio_file = open(file_path, "rb")
     translation = client.audio.translations.create(
         model="whisper-1",
         file=audio_file,

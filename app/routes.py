@@ -5,7 +5,7 @@ from datetime import datetime
 from pathlib import Path
 from flask import Blueprint, render_template, request
 
-from app.openai import transcribe_audio
+from app.openai import transcribe_audio, translate_audio
 
 routes = Blueprint(
     'routes', __name__, url_prefix='/'
@@ -33,6 +33,7 @@ def save_audio():
 @routes.route("/transcribe/<file_id>", methods = ['POST'])
 def process_audio(file_id):
     logger = logging.getLogger()
+    translate = request.args.get("translate") == "true"
 
     recordings_folder="./recordings"
     transcripts_folder="./transcripts"
@@ -41,12 +42,16 @@ def process_audio(file_id):
     recording_path = os.path.join(recordings_folder, file_id+".webm")
 
     try:
-        transcription = transcribe_audio(recording_path)
+        if translate:
+            transcription = translate_audio(recording_path)
+        else:
+            transcription = transcribe_audio(recording_path)
         data = {
             "transcript": transcription,
             "sentiment": "",
             "summary": "",
         }
+
         transcript_path = os.path.join(transcripts_folder, file_id+".json")
         with open(transcript_path, "w") as transcript_file:
             json.dump(data, transcript_file, indent=4)
