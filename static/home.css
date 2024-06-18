@@ -32,6 +32,7 @@
   background-color: #225;
   color: #fff;
   padding: 0.5rem;
+  cursor: pointer;
 }
 
 @media (max-width: 600px) {

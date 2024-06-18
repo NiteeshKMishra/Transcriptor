@@ -23,10 +23,27 @@ def summarization_prompt(text: str):
         {
             "role": "system",
             "content": f"""
-I'll share with you transcript of a recording. Please provide a concise summary of the context in 2-3 sentences,
+I'll share with you transcript of a recording. Please provide summary of the context in 1-2 sentences,
 focusing on key points and important details. You can add information from the internet and other sources
-if it adds value to the summary or provided context is not sufficient for summarization.
+if it adds value to the summary or provided context is not sufficient for summarization. Imitate the sentiment
+of the transcription in the summary.
 """.strip(),
         },
         {"role": "user", "content": f"Summarize the following: {text}"},
+    ]
+
+# Few shot prompting
+def sentiment_analysis_prompt(text: str):
+    return [
+        {
+            "role": "system",
+            "content": """
+I will provide you summary of transcription. Tell me if sentiment of the summary is positive or negative:
+""".strip(),
+        },
+        {"role": "user", "content": "The book 'Wuthering Heights' is very boring. This book should not be recommended to anyone."},
+        {"role": "assistant", "content": "negative"},
+        {"role": "user", "content": "The weather in England in very pleasant. This makes england a popular holiday destination for lot of tourists"},
+        {"role": "assistant", "content": "positive"},
+        {"role": "user", "content": f"{text}"},
     ]

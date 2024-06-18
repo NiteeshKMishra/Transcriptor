@@ -5,7 +5,7 @@ from datetime import datetime
 from pathlib import Path
 from flask import Blueprint, render_template, request
 
-from app.openai import transcribe_audio, translate_audio, summarize_transcription
+from app.openai import transcribe_audio, translate_audio, summarize_transcription, sentiment_analysis
 
 routes = Blueprint(
     'routes', __name__, url_prefix='/'
@@ -53,10 +53,16 @@ def process_audio(file_id):
             logger.error("error in transcribe_audio", repr(e))
             summary = transcription
 
+        try:
+            sentiment = sentiment_analysis(summary)
+        except Exception as e:
+            logger.error("error in transcribe_audio", repr(e))
+            sentiment = "positive"
+
         data = {
             "transcript": transcription,
             "summary": summary,
-            "sentiment": "",
+            "sentiment": sentiment,
         }
 
         transcript_path = os.path.join(transcripts_folder, file_id+".json")
